@@ -55,5 +55,23 @@ namespace SlikskabBrowserTest
             Assert.IsFalse(_driver.Url.EndsWith("MainPage.html"));
             Assert.IsTrue(_driver.Url.EndsWith("Index.html"));
         }
+
+        [TestMethod]
+        public void Filter_ShouldIncludeSearchedDate()
+        {
+            string url = "file:///C:/Code/3.Semester/browserSlikskab/MainPage.html";
+            _driver.Navigate().GoToUrl(url);
+
+            _driver.FindElement(By.Id("inputDay")).SendKeys("5");
+            _driver.FindElement(By.Id("inputMonth")).SendKeys("5");
+            _driver.FindElement(By.Id("inputYear")).SendKeys("2021");
+            _driver.FindElement(By.Id("filterButton")).Click();
+
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            
+            var rows = wait.Until((d)=> d.FindElement(By.ClassName("reading-row")));
+            Assert.IsTrue(rows.Text.Contains("05-05"));
+
+        }
     }
 }
