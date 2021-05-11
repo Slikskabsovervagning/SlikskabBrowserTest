@@ -44,7 +44,7 @@ namespace SlikskabBrowserTest
         [TestMethod]
         public void LogInWithWrongCredentials()
         {
-            string url = "file:///C:/Code/3.Semester/browserSlikskab/Index.html";
+            string url = "https://updog-slikskab.azurewebsites.net/";
             _driver.Navigate().GoToUrl(url);
 
             _driver.FindElement(By.Id("name")).SendKeys("admin");
@@ -53,13 +53,13 @@ namespace SlikskabBrowserTest
 
 
             Assert.IsFalse(_driver.Url.EndsWith("MainPage.html"));
-            Assert.IsTrue(_driver.Url.EndsWith("Index.html"));
+            Assert.IsTrue(_driver.Url.EndsWith(".net/"));
         }
 
         [TestMethod]
         public void Filter_ShouldIncludeSearchedDate()
         {
-            string url = "file:///C:/Code/3.Semester/browserSlikskab/MainPage.html";
+            string url = "https://updog-slikskab.azurewebsites.net/MainPage.html";
             _driver.Navigate().GoToUrl(url);
 
             _driver.FindElement(By.Id("inputDay")).SendKeys("5");
@@ -77,7 +77,7 @@ namespace SlikskabBrowserTest
         [TestMethod]
         public void Check_SensorLocks()
         {
-            string url = "file:///C:/Code/3.Semester/browserSlikskab/MainPage.html";
+            string url = "https://updog-slikskab.azurewebsites.net/MainPage.html";
             _driver.Navigate().GoToUrl(url);
 
             var image = _driver.FindElement(By.Id("myImage"));
