@@ -68,9 +68,23 @@ namespace SlikskabBrowserTest
             _driver.FindElement(By.Id("filterButton")).Click();
 
             WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            
-            var rows = wait.Until((d)=> d.FindElement(By.ClassName("reading-row")));
+
+            var rows = wait.Until((d) => d.FindElement(By.ClassName("reading-row")));
             Assert.IsTrue(rows.Text.Contains("05-05"));
+
+        }
+
+        [TestMethod]
+        public void Check_SensorLocks()
+        {
+            string url = "file:///C:/Code/3.Semester/browserSlikskab/MainPage.html";
+            _driver.Navigate().GoToUrl(url);
+
+            var image = _driver.FindElement(By.Id("myImage"));
+            _driver.FindElement(By.Id("closeLock")).Click();
+            Assert.IsTrue(image.GetAttribute("src").EndsWith("locked.gif"));
+            _driver.FindElement(By.Id("openLock")).Click();
+            Assert.AreEqual(_driver.FindElement(By.Id("myImage")).GetAttribute("src"), image.GetAttribute("src"));
 
         }
     }
