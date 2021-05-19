@@ -13,14 +13,14 @@ namespace SlikskabBrowserTest
 
         private static IWebDriver _driver;
 
-        [TestInitialize]
-        public void Setup()
+        [ClassInitialize]
+        public static void Setup(TestContext test)
         {
             _driver = new FirefoxDriver(DriverDirectory);
         }
 
-        [TestCleanup]
-        public void TearDown()
+        [ClassCleanup]
+        public static void TearDown()
         {
             _driver.Dispose();
         }
@@ -75,17 +75,31 @@ namespace SlikskabBrowserTest
         }
 
         [TestMethod]
-        public void Check_SensorLocks()
+        public void Check_SensorLocks_atSensor1()
         {
             string url = "https://updog-slikskab.azurewebsites.net/MainPage.html";
             _driver.Navigate().GoToUrl(url);
-
-            var image = _driver.FindElement(By.Id("myImage"));
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+            var image = wait.Until((d)=>d.FindElement(By.Id("1")));
             _driver.FindElement(By.Id("closeLock")).Click();
             Assert.IsTrue(image.GetAttribute("src").EndsWith("locked.gif"));
             _driver.FindElement(By.Id("openLock")).Click();
-            Assert.AreEqual(_driver.FindElement(By.Id("myImage")).GetAttribute("src"), image.GetAttribute("src"));
+            Assert.AreEqual(_driver.FindElement(By.Id("1")).GetAttribute("src"), image.GetAttribute("src"));
 
+        }
+
+        [TestMethod]
+        public void Change_SensorName()
+        {
+            string url = "https://updog-slikskab.azurewebsites.net/MainPage.html";
+            _driver.Navigate().GoToUrl(url);
+            WebDriverWait wait = new WebDriverWait(_driver,TimeSpan.FromSeconds(5));
+            var input = wait.Until((d)=>d.FindElement(By.Id("nameInput1")));
+            input.SendKeys("LivingRoom");
+            _driver.FindElement(By.Id("nameButton1")).Click();
+            var name = _driver.FindElement(By.Id("name1")).Text;
+            Assert.AreEqual("Sensor: LivingRoom", name);
+            
         }
     }
 }
